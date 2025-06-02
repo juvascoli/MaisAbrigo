@@ -1,0 +1,6 @@
+@MaisAbrigo_HostAddress = http://localhost:5186
+
+GET {{MaisAbrigo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
