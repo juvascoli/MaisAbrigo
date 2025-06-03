@@ -9,5 +9,14 @@ namespace MaisAbrigo.Data
 
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Abrigo> Abrigos { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Pessoa>()
+            .HasOne(p => p.Abrigos)
+            .WithMany(a => a.pessoas)
+            .HasForeignKey(p => p.IdAbrigo);
+
+        }
     }
 }

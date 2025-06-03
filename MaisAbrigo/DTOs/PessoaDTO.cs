@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MaisAbrigo.Model
+namespace MaisAbrigo.DTOs
 {
-    public class Pessoa
+    public class PessoaDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
         [Required(ErrorMessage = "O nome da pessoa é obrigatório")]
         [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]
         public string Nome { get; set; }
@@ -18,6 +14,5 @@ namespace MaisAbrigo.Model
         [StringLength(100, ErrorMessage = "O sexo deve ter no máximo 15 caracteres")]
         public string sexo { get; set; }
         public int IdAbrigo { get; set; }
-        public Abrigo Abrigos { get; set; } 
     }
 }
