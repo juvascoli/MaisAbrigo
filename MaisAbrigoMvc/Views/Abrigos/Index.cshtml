@@ -11,7 +11,6 @@
         <tr>
             <th>Nome</th>
             <th>Endereço</th>
-            <th>Telefone</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -22,11 +21,13 @@
                 <td>@abrigo.Nome</td>
                 <td>@abrigo.Endereco</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@abrigo.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@abrigo.Id">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@abrigo.Id">Excluir</a>
+                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@abrigo.Id">Detalhes</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@abrigo.Id">Editar</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@abrigo.Id">Excluir</a>
                 </td>
             </tr>
         }
     </tbody>
+    
 </table>
+<a class="btn btn-primary btn-sm py-2 px-3 mt-4" asp-action="Create">Criar</a>
