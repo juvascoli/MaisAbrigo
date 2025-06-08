@@ -1,0 +1,31 @@
+﻿@model MaisAbrigo.Model.Pessoa
+@{
+    var abrigos = ViewBag.Abrigos as List<MaisAbrigo.Model.Abrigo>;
+}
+
+<h2>Nova Pessoa</h2>
+<form asp-action="Create">
+    <div class="form-group">
+        <label>Nome</label>
+        <input asp-for="Nome" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Idade</label>
+        <input asp-for="Idade" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Sexo</label>
+        <input asp-for="sexo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Abrigo</label>
+        <select asp-for="IdAbrigo" class="form-control">
+            <option value="">Selecione</option>
+            @foreach (var abrigo in abrigos)
+            {
+                <option value="@abrigo.Id">@abrigo.Nome</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Salvar</button>
+</form>

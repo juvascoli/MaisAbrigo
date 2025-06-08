@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MaisAbrigo.Model.Pessoa>
+
+<h2>Lista de Pessoas</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Sexo</th>
+            <th>Abrigo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pessoa in Model)
+        {
+            <tr>
+                <td>@pessoa.Nome</td>
+                <td>@pessoa.Idade</td>
+                <td>@pessoa.sexo</td>
+                <td>@pessoa.Abrigos?.Nome</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@pessoa.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@pessoa.Id">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@pessoa.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,15 @@
+﻿@model MaisAbrigo.Model.Abrigo
+
+<h2>Detalhes do Abrigo</h2>
+<p><strong>Nome:</strong> @Model.Nome</p>
+<p><strong>Endereço:</strong> @Model.Endereco</p>
+<p><strong>Ocupação Atual:</strong> @Model.OcupacaoAtual</p>
+
+<h4>Pessoas no abrigo:</h4>
+<ul>
+    @foreach (var pessoa in Model.pessoas)
+    {
+        <li>@pessoa.Nome (@pessoa.Idade anos)</li>
+    }
+</ul>
+<a asp-action="Index">Voltar</a>
