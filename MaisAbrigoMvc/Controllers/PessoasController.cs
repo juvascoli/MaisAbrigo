@@ -100,31 +100,43 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var pessoa = await _context.Pessoas
-                .Include(p => p.Abrigos)
-                .FirstOrDefaultAsync(p => p.Id == id);
+public async Task<IActionResult> Delete(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
 
-            return pessoa == null ? NotFound() : View(pessoa);
-        }
+    var pessoa = await _context.Pessoas
+        .Include(p => p.Abrigo) // relacionamento correto singular
+        .FirstOrDefaultAsync(p => p.Id == id);
 
-        // POST: Pessoas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var pessoa = await _context.Pessoas.FindAsync(id);
-            if (pessoa == null)
-                return NotFound();
+    if (pessoa == null)
+    {
+        return NotFound();
+    }
 
-            _context.Pessoas.Remove(pessoa);
-            await _context.SaveChangesAsync();
+    return View(pessoa); // retorna view de confirmação de exclusão
+}
 
-            return RedirectToAction(nameof(Index));
-        }
+// POST: Pessoas/Delete/5
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var pessoa = await _context.Pessoas.FindAsync(id);
+    if (pessoa != null)
+    {
+        _context.Pessoas.Remove(pessoa);
+        await _context.SaveChangesAsync();
+    }
 
-        // Método auxiliar
+    return RedirectToAction(nameof(Index));
+}
+
+
+        // GET: Pessoas/Delete/5
+   Método auxiliar
         private bool PessoaExists(int id)
         {
             return _context.Pessoas.Any(e => e.Id == id);
