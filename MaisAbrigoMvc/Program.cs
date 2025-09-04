@@ -20,9 +20,9 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// Rota padrão
+// Rota padrï¿½o
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Abrigos}/{action=Index}/{id?}");
 
-app.Run();
+await app.RunAsync();
