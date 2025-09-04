@@ -1,6 +1,7 @@
 ﻿using MaisAbrigo.Data;
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace MaisAbrigoMvc.Controllers
         public async Task<IActionResult> Index()
         {
             var pessoas = await _context.Pessoas
-                .Include(p => p.Abrigos)
+                .Include(p => p.Abrigos) // Use consistent naming (plural)
                 .ToListAsync();
 
             return View(pessoas);
@@ -29,7 +30,7 @@ namespace MaisAbrigoMvc.Controllers
         // GET: Pessoas/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
+            ViewBag.Abrigos = new SelectList(await _context.Abrigos.ToListAsync(), "Id", "Nome");
             return View();
         }
 
@@ -38,15 +39,16 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pessoa pessoa)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) // Check ModelState first
             {
-                ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
-                return View(pessoa);
+                _context.Pessoas.Add(pessoa);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
-            _context.Pessoas.Add(pessoa);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // If invalid, repopulate ViewBag and return to view
+            ViewBag.Abrigos = new SelectList(await _context.Abrigos.ToListAsync(), "Id", "Nome", pessoa.AbrigoId);
+            return View(pessoa);
         }
 
         // GET: Pessoas/Edit/5
@@ -55,88 +57,86 @@ namespace MaisAbrigoMvc.Controllers
             var pessoa = await _context.Pessoas.FindAsync(id);
             if (pessoa == null) return NotFound();
 
-            ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
+            ViewBag.Abrigos = new SelectList(await _context.Abrigos.ToListAsync(), "Id", "Nome", pessoa.AbrigoId);
             return View(pessoa);
         }
 
         // POST: Pessoas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Pessoa pessoa)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Telefone,AbrigoId")] Pessoa pessoa)
         {
             if (id != pessoa.Id)
                 return BadRequest();
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) // Check ModelState first
             {
-                ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
-                return View(pessoa);
+                try
+                {
+                    _context.Update(pessoa);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PessoaExists(pessoa.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
             }
 
-            try
-            {
-                _context.Update(pessoa);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PessoaExists(pessoa.Id))
-                    return NotFound();
-                else
-                    throw;
-            }
-
-            return RedirectToAction(nameof(Index));
+            // If invalid, repopulate ViewBag and return to view
+            ViewBag.Abrigos = new SelectList(await _context.Abrigos.ToListAsync(), "Id", "Nome", pessoa.AbrigoId);
+            return View(pessoa);
         }
 
         // GET: Pessoas/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var pessoa = await _context.Pessoas
-                .Include(p => p.Abrigos)
+                .Include(p => p.Abrigos) // Use consistent naming
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             return pessoa == null ? NotFound() : View(pessoa);
         }
 
         // GET: Pessoas/Delete/5
-public async Task<IActionResult> Delete(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    var pessoa = await _context.Pessoas
-        .Include(p => p.Abrigo) // relacionamento correto singular
-        .FirstOrDefaultAsync(p => p.Id == id);
+            var pessoa = await _context.Pessoas
+                .Include(p => p.Abrigos) // Use consistent naming
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-    if (pessoa == null)
-    {
-        return NotFound();
-    }
+            if (pessoa == null)
+            {
+                return NotFound();
+            }
 
-    return View(pessoa); // retorna view de confirmação de exclusão
-}
+            return View(pessoa);
+        }
 
-// POST: Pessoas/Delete/5
-[HttpPost, ActionName("Delete")]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeleteConfirmed(int id)
-{
-    var pessoa = await _context.Pessoas.FindAsync(id);
-    if (pessoa != null)
-    {
-        _context.Pessoas.Remove(pessoa);
-        await _context.SaveChangesAsync();
-    }
+        // POST: Pessoas/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var pessoa = await _context.Pessoas.FindAsync(id);
+            if (pessoa != null)
+            {
+                _context.Pessoas.Remove(pessoa);
+                await _context.SaveChangesAsync();
+            }
 
-    return RedirectToAction(nameof(Index));
-}
+            return RedirectToAction(nameof(Index));
+        }
 
-
-        // GET: Pessoas/Delete/5
-   Método auxiliar
+        // Método auxiliar
         private bool PessoaExists(int id)
         {
             return _context.Pessoas.Any(e => e.Id == id);
