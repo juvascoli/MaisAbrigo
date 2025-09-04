@@ -46,7 +46,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Edit/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var pessoa = await _context.Pessoas.FindAsync(id);
@@ -87,7 +87,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Details/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var pessoa = await _context.Pessoas
@@ -98,7 +98,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Delete/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var pessoa = await _context.Pessoas
@@ -113,7 +113,7 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) // só para calar o warning
                 return RedirectToAction(nameof(Index));
 
             var pessoa = await _context.Pessoas.FindAsync(id);
@@ -125,7 +125,7 @@ namespace MaisAbrigoMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Método auxiliar para verificar se a pessoa existe
+        // Método auxiliar
         private bool PessoaExists(int id)
         {
             return _context.Pessoas.Any(e => e.Id == id);

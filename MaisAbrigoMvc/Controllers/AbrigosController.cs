@@ -39,7 +39,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Edit/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -74,7 +74,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Details/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var abrigo = await _context.Abrigos
@@ -85,7 +85,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Delete/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -97,7 +97,7 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) // só para calar o warning
                 return RedirectToAction(nameof(Index));
 
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -109,7 +109,7 @@ namespace MaisAbrigoMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Método auxiliar para verificar se o abrigo existe
+        // Método auxiliar
         private bool AbrigoExists(int id)
         {
             return _context.Abrigos.Any(e => e.Id == id);
