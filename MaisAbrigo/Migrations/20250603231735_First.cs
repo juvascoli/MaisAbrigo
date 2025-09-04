@@ -4,6 +4,13 @@
 
 namespace MaisAbrigo.Migrations
 {
+    public static class OracleTypes
+    {
+        public const string Number10 = "NUMBER(10)";
+        public const string NVarChar100 = "NVARCHAR2(100)";
+        public const string NVarChar200 = "NVARCHAR2(200)";
+    }
+
     /// <inheritdoc />
     public partial class First : Migration
     {
@@ -14,11 +21,11 @@ namespace MaisAbrigo.Migrations
                 name: "Abrigos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Id = table.Column<int>(type: OracleTypes.Number10, nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    Endereco = table.Column<string>(type: "NVARCHAR2(200)", maxLength: 200, nullable: false),
-                    OcupacaoAtual = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Nome = table.Column<string>(type: OracleTypes.NVarChar100, maxLength: 100, nullable: false),
+                    Endereco = table.Column<string>(type: OracleTypes.NVarChar200, maxLength: 200, nullable: false),
+                    OcupacaoAtual = table.Column<int>(type: OracleTypes.Number10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,12 +36,12 @@ namespace MaisAbrigo.Migrations
                 name: "Pessoas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Id = table.Column<int>(type: OracleTypes.Number10, nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    Nome = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    Idade = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    sexo = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
-                    IdAbrigo = table.Column<int>(type: "NUMBER(10)", nullable: false)
+                    Nome = table.Column<string>(type: OracleTypes.NVarChar100, maxLength: 100, nullable: false),
+                    Idade = table.Column<int>(type: OracleTypes.Number10, nullable: false),
+                    sexo = table.Column<string>(type: OracleTypes.NVarChar100, maxLength: 100, nullable: false),
+                    IdAbrigo = table.Column<int>(type: OracleTypes.Number10, nullable: false)
                 },
                 constraints: table =>
                 {

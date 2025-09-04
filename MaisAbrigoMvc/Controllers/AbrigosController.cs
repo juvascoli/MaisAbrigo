@@ -32,20 +32,18 @@ namespace MaisAbrigoMvc.Controllers
         }
 
 
-        // POST: Abrigos/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Endereco,Telefone")] Abrigo abrigo)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(abrigo);
-            }
+[HttpPost]
+public async Task<IActionResult> Create(Abrigo abrigo)
+{
+    if (!ModelState.IsValid)
+    {
+        return View(abrigo);
+    }
 
-            _context.Abrigos.Add(abrigo);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+    _context.Add(abrigo);
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
 
         // GET: Abrigos/Edit/5
         public async Task<IActionResult> Edit(int? id)
