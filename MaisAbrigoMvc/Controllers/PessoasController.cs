@@ -2,10 +2,12 @@
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MaisAbrigoMvc.Controllers
 {
-    public class PessoasController : ControllerBase
+    public class PessoasController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -44,7 +46,6 @@ namespace MaisAbrigoMvc.Controllers
 
             _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -63,14 +64,14 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Pessoa pessoa)
         {
+            if (id != pessoa.Id)
+                return BadRequest();
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
                 return View(pessoa);
             }
-
-            if (id != pessoa.Id)
-                return BadRequest();
 
             try
             {
