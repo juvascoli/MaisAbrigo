@@ -1,7 +1,7 @@
 ﻿
 namespace MaisAbrigo.DTOs
 {
-    public class PessoaResumoDTO
+    public class PessoaResumoDto
     {
         public string Nome { get; set; }
         public int Idade { get; set; }

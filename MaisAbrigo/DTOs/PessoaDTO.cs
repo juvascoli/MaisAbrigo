@@ -2,7 +2,7 @@
 
 namespace MaisAbrigo.DTOs
 {
-    public class PessoaDTO
+    public class PessoaDto
     {
         [Required(ErrorMessage = "O nome da pessoa é obrigatório")]
         [StringLength(100, ErrorMessage = "O nome deve ter no máximo 100 caracteres")]

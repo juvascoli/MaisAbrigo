@@ -4,24 +4,30 @@
 
 <form asp-action="Edit" method="post">
     <div class="form-group">
-        <label asp-for="Nome"></label>
-        <input asp-for="Nome" class="form-control" />
+        <label>
+            <input asp-for="Nome" class="form-control" />
+            Nome
+        </label>
         <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Endereco"></label>
-        <input asp-for="Endereco" class="form-control" />
+        <label>
+            <input asp-for="Endereco" class="form-control" />
+            Endereço
+        </label>
         <span asp-validation-for="Endereco" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="OcupacaoAtual"></label>
-        <input asp-for="OcupacaoAtual" class="form-control" />
+        <label>
+            <input asp-for="OcupacaoAtual" class="form-control" />
+            Ocupação Atual
+        </label>
         <span asp-validation-for="OcupacaoAtual" class="text-danger"></span>
     </div>
 
-    <!-- Incluindo o ID do abrigo para o Edit funcionar corretamente -->
+    <!-- Inclui o ID oculto para o Edit funcionar -->
     <input type="hidden" asp-for="Id" />
 
     <button type="submit" class="btn btn-success">Salvar</button>

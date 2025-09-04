@@ -22,11 +22,15 @@ namespace MaisAbrigoMvc.Controllers
             var abrigos = await _context.Abrigos
                 .Include(a => a.pessoas)
                 .ToListAsync();
+
             return View(abrigos);
         }
 
         // GET: Abrigos/Create
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         // POST: Abrigos/Create
         [HttpPost]
@@ -34,20 +38,30 @@ namespace MaisAbrigoMvc.Controllers
         public async Task<IActionResult> Create(Abrigo abrigo)
         {
             if (!ModelState.IsValid)
+            {
                 return View(abrigo);
+            }
 
             _context.Abrigos.Add(abrigo);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Abrigos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var abrigo = await _context.Abrigos.FindAsync(id);
-            if (abrigo == null) return NotFound();
+
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
             return View(abrigo);
         }
@@ -57,38 +71,50 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Endereco,Telefone")] Abrigo abrigo)
         {
-            if (id != abrigo.Id) return NotFound();
-
-            if (ModelState.IsValid)
+            if (id != abrigo.Id)
             {
-                try
-                {
-                    _context.Update(abrigo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AbrigoExists(abrigo.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
-            return View(abrigo);
+            if (!ModelState.IsValid)
+            {
+                return View(abrigo);
+            }
+
+            try
+            {
+                _context.Update(abrigo);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AbrigoExists(abrigo.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Abrigos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var abrigo = await _context.Abrigos
                 .Include(a => a.pessoas)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (abrigo == null) return NotFound();
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
             return View(abrigo);
         }
@@ -96,12 +122,19 @@ namespace MaisAbrigoMvc.Controllers
         // GET: Abrigos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var abrigo = await _context.Abrigos
+                .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (abrigo == null) return NotFound();
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
             return View(abrigo);
         }
@@ -112,10 +145,15 @@ namespace MaisAbrigoMvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
-            if (abrigo == null) return NotFound();
+
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
             _context.Abrigos.Remove(abrigo);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

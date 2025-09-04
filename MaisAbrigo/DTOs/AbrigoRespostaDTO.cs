@@ -2,7 +2,7 @@
 
 namespace MaisAbrigo.DTOs
 {
-    public class AbrigoRespostaDTO
+    public class AbrigoRespostaDto
     {
         public int Id { get; set; }
 

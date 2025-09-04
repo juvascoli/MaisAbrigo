@@ -2,7 +2,7 @@
 
 namespace MaisAbrigo.DTOs
 {
-    public class AbrigoDTO
+    public class AbrigoDto
     {
         public string Nome { get; set; }
         [Required(ErrorMessage = "O endereço do abrigo é obrigatório")]

@@ -4,29 +4,47 @@
 }
 
 <h2>Nova Pessoa</h2>
-<form asp-action="Create">
+
+<form asp-action="Create" method="post">
     <div class="form-group">
-        <label>Nome</label>
-        <input asp-for="Nome" class="form-control" />
+        <label>
+            <input asp-for="Nome" class="form-control" />
+            Nome
+        </label>
+        <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label>Idade</label>
-        <input asp-for="Idade" class="form-control" />
+        <label>
+            <input asp-for="Idade" class="form-control" />
+            Idade
+        </label>
+        <span asp-validation-for="Idade" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label>Sexo</label>
-        <input asp-for="sexo" class="form-control" />
+        <label>
+            <input asp-for="Sexo" class="form-control" />
+            Sexo
+        </label>
+        <span asp-validation-for="Sexo" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label>Abrigo</label>
-        <select asp-for="IdAbrigo" class="form-control">
-            <option value="">Selecione</option>
-            @foreach (var abrigo in abrigos)
-            {
-                <option value="@abrigo.Id">@abrigo.Nome</option>
-            }
-        </select>
+        <label>
+            <select asp-for="IdAbrigo" class="form-control">
+                <option value="">Selecione</option>
+                @foreach (var abrigo in abrigos)
+                {
+                    <option value="@abrigo.Id">@abrigo.Nome</option>
+                }
+            </select>
+            Abrigo
+        </label>
+        <span asp-validation-for="IdAbrigo" class="text-danger"></span>
     </div>
+
     <button type="submit" class="btn btn-success">Salvar</button>
 </form>
+
 <a class="btn btn-primary btn-sm py-2 px-3 mt-4" asp-action="Index">Voltar</a>
