@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MaisAbrigo.Data;
+﻿using MaisAbrigo.Data;
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +17,10 @@ namespace MaisAbrigoMvc.Controllers
         // GET: Pessoas
         public async Task<IActionResult> Index()
         {
-            var pessoas = await _context.Pessoas.Include(p => p.Abrigos).ToListAsync();
+            var pessoas = await _context.Pessoas
+                .Include(p => p.Abrigos)
+                .ToListAsync();
+
             return View(pessoas);
         }
 
@@ -40,13 +42,13 @@ namespace MaisAbrigoMvc.Controllers
                 return View(pessoa);
             }
 
-            _context.Add(pessoa);
+            _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Pessoas/Edit/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var pessoa = await _context.Pessoas.FindAsync(id);
@@ -87,7 +89,6 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Details/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var pessoa = await _context.Pessoas
@@ -98,7 +99,6 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Delete/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var pessoa = await _context.Pessoas
@@ -113,15 +113,13 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!ModelState.IsValid) // só para calar o warning
-                return RedirectToAction(nameof(Index));
-
             var pessoa = await _context.Pessoas.FindAsync(id);
             if (pessoa == null)
                 return NotFound();
 
             _context.Pessoas.Remove(pessoa);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

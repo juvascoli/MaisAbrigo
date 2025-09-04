@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MaisAbrigo.Data;
+﻿using MaisAbrigo.Data;
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +17,10 @@ namespace MaisAbrigoMvc.Controllers
         // GET: Abrigos
         public async Task<IActionResult> Index()
         {
-            var abrigos = await _context.Abrigos.Include(a => a.pessoas).ToListAsync();
+            var abrigos = await _context.Abrigos
+                .Include(a => a.pessoas)
+                .ToListAsync();
+
             return View(abrigos);
         }
 
@@ -33,13 +35,13 @@ namespace MaisAbrigoMvc.Controllers
             if (!ModelState.IsValid)
                 return View(abrigo);
 
-            _context.Add(abrigo);
+            _context.Abrigos.Add(abrigo);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Abrigos/Edit/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -74,7 +76,6 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Details/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var abrigo = await _context.Abrigos
@@ -85,7 +86,6 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Delete/5
-        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "ModelState not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -97,19 +97,16 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!ModelState.IsValid) // só para calar o warning
-                return RedirectToAction(nameof(Index));
-
             var abrigo = await _context.Abrigos.FindAsync(id);
             if (abrigo == null)
                 return NotFound();
 
             _context.Abrigos.Remove(abrigo);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
-        // Método auxiliar
         private bool AbrigoExists(int id)
         {
             return _context.Abrigos.Any(e => e.Id == id);
