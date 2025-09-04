@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MaisAbrigoMvc.Controllers
 {
-    public class PessoasController : Controller
+    public class PessoasController : ControllerBase
     {
         private readonly AppDbContext _context;
 
