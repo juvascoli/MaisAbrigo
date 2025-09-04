@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "MaisAbrigo API",
         Version = "v1",
-        Description = "API REST para cadastro de pessoas resgatadas e abrigos em situações de emergência.",
+        Description = "API REST para cadastro de pessoas resgatadas e abrigos em situaï¿½ï¿½es de emergï¿½ncia.",
         Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
             Name = "Leonardo Cadena de Souza | Davi Gonzaga | Julia Vasconcelos",
@@ -41,4 +41,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
+

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MaisAbrigoMvc.Controllers
 {
-    public class AbrigosController : ControllerBase
+    public class AbrigosController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -22,20 +22,20 @@ namespace MaisAbrigoMvc.Controllers
             var abrigos = await _context.Abrigos
                 .Include(a => a.pessoas)
                 .ToListAsync();
-
             return View(abrigos);
         }
 
         // GET: Abrigos/Create
         public IActionResult Create()
         {
-            return View();
+             return View();
         }
+
 
         // POST: Abrigos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Abrigo abrigo)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Endereco,Telefone")] Abrigo abrigo)
         {
             if (!ModelState.IsValid)
             {
@@ -44,127 +44,113 @@ namespace MaisAbrigoMvc.Controllers
 
             _context.Abrigos.Add(abrigo);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Abrigos/Edit/5
-
-      
-
- 
-
-        // GET: Abrigos/Edit/5
-public async Task<IActionResult> Edit(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
-
-    var abrigo = await _context.Abrigos.FindAsync(id);
-
-    if (abrigo == null)
-    {
-        return NotFound();
-    }
-
-    return View(abrigo);
-}
-
-// POST: Abrigos/Edit/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Endereco,Telefone")] Abrigo abrigo)
-{
-    if (id != abrigo.Id)
-    {
-        return NotFound();
-    }
-
-    if (!ModelState.IsValid)
-    {
-        return View(abrigo);
-    }
-
-    try
-    {
-        _context.Update(abrigo);
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!AbrigoExists(abrigo.Id))
+        public async Task<IActionResult> Edit(int? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var abrigo = await _context.Abrigos.FindAsync(id);
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
+
+            return View(abrigo);
         }
 
-        throw;
-    }
+        // POST: Abrigos/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Endereco,Telefone")] Abrigo abrigo)
+        {
+            if (id != abrigo.Id)
+            {
+                return NotFound();
+            }
 
-    return RedirectToAction(nameof(Index));
-}
+            if (!ModelState.IsValid)
+            {
+                return View(abrigo);
+            }
 
-// GET: Abrigos/Details/5
-public async Task<IActionResult> Details(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+            try
+            {
+                _context.Update(abrigo);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AbrigoExists(abrigo.Id))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
 
-    var abrigo = await _context.Abrigos
-        .Include(a => a.pessoas)
-        .FirstOrDefaultAsync(a => a.Id == id);
+            return RedirectToAction(nameof(Index));
+        }
 
-    if (abrigo == null)
-    {
-        return NotFound();
-    }
+        // GET: Abrigos/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    return View(abrigo);
-}
+            var abrigo = await _context.Abrigos
+                .Include(a => a.pessoas)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-// GET: Abrigos/Delete/5
-public async Task<IActionResult> Delete(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
-    var abrigo = await _context.Abrigos
-        .AsNoTracking()
-        .FirstOrDefaultAsync(a => a.Id == id);
+            return View(abrigo);
+        }
 
-    if (abrigo == null)
-    {
-        return NotFound();
-    }
+        // GET: Abrigos/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    return View(abrigo);
-}
+            var abrigo = await _context.Abrigos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-// POST: Abrigos/Delete/5
-[HttpPost, ActionName("Delete")]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeleteConfirmed(int id)
-{
-    var abrigo = await _context.Abrigos.FindAsync(id);
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
-    if (abrigo == null)
-    {
-        return NotFound();
-    }
+            return View(abrigo);
+        }
 
-    _context.Abrigos.Remove(abrigo);
-    await _context.SaveChangesAsync();
+        // POST: Abrigos/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var abrigo = await _context.Abrigos.FindAsync(id);
+            if (abrigo == null)
+            {
+                return NotFound();
+            }
 
-    return RedirectToAction(nameof(Index));
-}
-
-      
-
+            _context.Abrigos.Remove(abrigo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool AbrigoExists(int id)
         {

@@ -8,30 +8,31 @@
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label>
-            <input asp-for="Nome" class="form-control" />
             Nome
+            <input asp-for="Nome" class="form-control" />
         </label>
         <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label>
-            <input asp-for="Idade" class="form-control" />
             Idade
+            <input asp-for="Idade" class="form-control" />
         </label>
         <span asp-validation-for="Idade" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label>
-            <input asp-for="Sexo" class="form-control" />
             Sexo
+            <input asp-for="Sexo" class="form-control" />
         </label>
         <span asp-validation-for="Sexo" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label>
+            Abrigo
             <select asp-for="IdAbrigo" class="form-control">
                 <option value="">Selecione</option>
                 @foreach (var abrigo in abrigos)
@@ -39,7 +40,6 @@
                     <option value="@abrigo.Id">@abrigo.Nome</option>
                 }
             </select>
-            Abrigo
         </label>
         <span asp-validation-for="IdAbrigo" class="text-danger"></span>
     </div>
