@@ -1,4 +1,5 @@
-﻿using MaisAbrigo.Data;
+﻿using System.Diagnostics.CodeAnalysis;
+using MaisAbrigo.Data;
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,9 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Abrigos = _context.Abrigos.ToList();
+            ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
             return View();
         }
 
@@ -35,7 +36,7 @@ namespace MaisAbrigoMvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Abrigos = _context.Abrigos.ToList();
+                ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
                 return View(pessoa);
             }
 
@@ -45,12 +46,13 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Edit/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var pessoa = await _context.Pessoas.FindAsync(id);
             if (pessoa == null) return NotFound();
 
-            ViewBag.Abrigos = _context.Abrigos.ToList();
+            ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
             return View(pessoa);
         }
 
@@ -61,7 +63,7 @@ namespace MaisAbrigoMvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Abrigos = _context.Abrigos.ToList();
+                ViewBag.Abrigos = await _context.Abrigos.ToListAsync();
                 return View(pessoa);
             }
 
@@ -85,6 +87,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Details/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var pessoa = await _context.Pessoas
@@ -95,6 +98,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Pessoas/Delete/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var pessoa = await _context.Pessoas
@@ -109,8 +113,11 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(Index));
+
             var pessoa = await _context.Pessoas.FindAsync(id);
-            if (pessoa == null) 
+            if (pessoa == null)
                 return NotFound();
 
             _context.Pessoas.Remove(pessoa);

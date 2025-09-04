@@ -32,7 +32,7 @@ jobs:
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarcloud-github-action@2e6f3f8a9fa7a7c2a373b9f4f6b1481b2a61e41d
         with:
           args: >
             -Dsonar.projectKey=juvascoli_MaisAbrigo

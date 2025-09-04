@@ -1,4 +1,5 @@
-﻿using MaisAbrigo.Data;
+﻿using System.Diagnostics.CodeAnalysis;
+using MaisAbrigo.Data;
 using MaisAbrigo.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Abrigo abrigo)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return View(abrigo);
 
             _context.Add(abrigo);
@@ -38,6 +39,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Edit/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Edit(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -49,10 +51,10 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Abrigo abrigo)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return View(abrigo);
 
-            if (id != abrigo.Id) 
+            if (id != abrigo.Id)
                 return BadRequest();
 
             try
@@ -72,6 +74,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Details/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Details(int id)
         {
             var abrigo = await _context.Abrigos
@@ -82,6 +85,7 @@ namespace MaisAbrigoMvc.Controllers
         }
 
         // GET: Abrigos/Delete/5
+        [SuppressMessage("Microsoft.AspNetCore.Mvc", "ModelStateInvalidFilter", Justification = "Model state not relevant for GET")]
         public async Task<IActionResult> Delete(int id)
         {
             var abrigo = await _context.Abrigos.FindAsync(id);
@@ -93,8 +97,11 @@ namespace MaisAbrigoMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction(nameof(Index));
+
             var abrigo = await _context.Abrigos.FindAsync(id);
-            if (abrigo == null) 
+            if (abrigo == null)
                 return NotFound();
 
             _context.Abrigos.Remove(abrigo);
