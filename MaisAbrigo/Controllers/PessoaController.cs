@@ -8,7 +8,7 @@ namespace MaisAbrigo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PessoaController : Controller
+    public class PessoaController : ControllerBase
     {
         private readonly AppDbContext _context;
 

@@ -8,7 +8,7 @@
     {
         [Route("api/[controller]")]
         [ApiController]
-        public class AbrigoController : Controller
+        public class AbrigoController : ControllerBase
         {
         
             private readonly AppDbContext _context;
